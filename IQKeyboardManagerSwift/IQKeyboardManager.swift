@@ -34,7 +34,12 @@ Codeless drop-in universal library allows to prevent issues of keyboard sliding 
 
 @available(iOSApplicationExtension, unavailable)
 @objc public final class IQKeyboardManager: NSObject {
-
+    
+    // Self Made
+    @objc public var shouldResignKeyboard: (() -> Bool)? = nil
+    
+    
+    
     /**
     Returns the default singleton instance.
     */
@@ -398,6 +403,7 @@ extension IQKeyboardManager: UIGestureRecognizerDelegate {
         if gesture.state == .ended {
 
             //Resigning currently responder textField.
+            guard shouldResignKeyboard?() ?? true else { return }
             resignFirstResponder()
         }
     }
